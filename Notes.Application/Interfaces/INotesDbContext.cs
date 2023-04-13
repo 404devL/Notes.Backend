@@ -5,7 +5,7 @@ namespace Notes.Application.Interfaces;
 
 public interface INotesDbContext
 {
-    public DbSet<Note> Notes { get; set; }
+    DbSet<Note> Notes { get; set; }
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
