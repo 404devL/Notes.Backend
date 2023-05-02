@@ -13,7 +13,7 @@ public class DeleteNoteCommandHandler : IRequestHandler<DeleteNoteCommand>
 
     public DeleteNoteCommandHandler(INotesDbContext dbContext) => _dbContext = dbContext;
 
-    public async Task<Unit> Handle(DeleteNoteCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteNoteCommand request, CancellationToken cancellationToken)
     {
         var entity = await _dbContext.Notes.FindAsync(new object[] { request.Id }, cancellationToken);
 
@@ -23,8 +23,7 @@ public class DeleteNoteCommandHandler : IRequestHandler<DeleteNoteCommand>
         }
 
         _dbContext.Notes.Remove(entity);
-        await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }
