@@ -1,4 +1,4 @@
-namespace WebAPI;
+namespace Notes.WebAPI;
 
 class Program
 {
