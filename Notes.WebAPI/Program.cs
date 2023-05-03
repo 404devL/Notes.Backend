@@ -1,6 +1,15 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+namespace WebAPI;
 
-app.MapGet("/", () => "Hello World!");
+class Program
+{
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+        var app = builder.Build();
 
-app.Run();
+        using (var scope = app.Services.CreateScope()) { }
+
+        app.Run();
+    }
+}
+
