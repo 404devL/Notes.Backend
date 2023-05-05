@@ -6,5 +6,5 @@ public class DeleteNoteCommand : IRequest
 {
     public Guid Id { get; set; }
 
-    public Guid NoteId { get; set; }
+    public Guid UserId { get; set; }
 }
