@@ -19,10 +19,6 @@ class Program
             config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
             config.AddProfile(new AssemblyMappingProfile(typeof(INotesDbContext).Assembly));
         });
-        builder.Services.AddMediatR(config =>
-        {
-            config.RegisterServicesFromAssembly(typeof(INotesDbContext).Assembly);
-        });
 
         builder.Services.AddApplication();
         builder.Services.AddPersistance(builder.Configuration);
@@ -50,6 +46,7 @@ class Program
         {
             endpoints.MapControllers();
         });
+#pragma warning restore ASP0014
 
         using (var scope = app.Services.CreateScope())
         {
