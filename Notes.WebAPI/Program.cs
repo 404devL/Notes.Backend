@@ -2,7 +2,7 @@ using Notes.Application;
 using Notes.Application.Common.Mappings;
 using Notes.Application.Interfaces;
 using Notes.Persistence;
-using System.Net.NetworkInformation;
+using Notes.WebAPI.Middleware;
 using System.Reflection;
 
 namespace Notes.WebAPI;
@@ -37,6 +37,7 @@ class Program
         //App
         var app = builder.Build();
 
+        app.UseCustomExceptionHandler();
         app.UseRouting();
         app.UseHttpsRedirection();
         app.UseCors("AllowAll");
