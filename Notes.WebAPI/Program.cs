@@ -42,12 +42,7 @@ class Program
         app.UseHttpsRedirection();
         app.UseCors("AllowAll");
 
-#pragma warning disable ASP0014
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
-#pragma warning restore ASP0014
+        app.MapControllers();
 
         using (var scope = app.Services.CreateScope())
         {
