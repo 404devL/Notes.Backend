@@ -10,7 +10,7 @@ public class NotesContextFactory
     public static Guid UserBId = Guid.NewGuid();
 
     public static Guid NoteIdForDelete = Guid.NewGuid();
-    public static Guid NoteForUpdate = Guid.NewGuid();
+    public static Guid NoteIdForUpdate = Guid.NewGuid();
 
     public static NotesDbContext Create()
     {
@@ -35,7 +35,7 @@ public class NotesContextFactory
             CreationDate = DateTime.Today,
             Description = "Description2",
             EditDate = null,
-            Id = Guid.Parse("{CB06E1BF-E2FA-435D-96EC-B17F2D534C84}"),
+            Id = Guid.Parse("CB06E1BF-E2FA-435D-96EC-B17F2D534C84"),
             Title = "Title2",
             UserId = UserBId
         },
@@ -51,9 +51,9 @@ public class NotesContextFactory
         new Note
         {
             CreationDate = DateTime.Today,
-            Description = "Description3",
+            Description = "Description4",
             EditDate = null,
-            Id = NoteForUpdate,
+            Id = NoteIdForUpdate,
             Title = "Title4",
             UserId = UserBId
         });
