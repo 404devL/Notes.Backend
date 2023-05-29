@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Options;
 using Notes.Application;
 using Notes.Application.Common.Mappings;
 using Notes.Application.Interfaces;
 using Notes.Persistence;
 using Notes.WebAPI.Middleware;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
 namespace Notes.WebAPI;
@@ -47,21 +50,25 @@ class Program
                 options.RequireHttpsMetadata = false;
             });
 
-        builder.Services.AddSwaggerGen(config =>
-        {
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            config.IncludeXmlComments(xmlPath);
-        });
+        builder.Services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+        builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddApiVersioning();
 
         //App
         var app = builder.Build();
 
+        app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI(config =>
         {
-            config.RoutePrefix = string.Empty;
-            config.SwaggerEndpoint("swagger/v1/swagger.json", "Notes API");
+            var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+            foreach (var description in provider.ApiVersionDescriptions)
+            {
+                config.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                    description.GroupName.ToUpperInvariant());
+                config.RoutePrefix = string.Empty;
+            }
         });
         app.UseCustomExceptionHandler();
         app.UseRouting();
@@ -69,6 +76,7 @@ class Program
         app.UseCors("AllowAll");
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseApiVersioning();
 
         app.MapControllers();
 
@@ -80,7 +88,7 @@ class Program
                 var context = serviceProvider.GetRequiredService<NotesDbContext>();
                 DbInitialize.Initialize(context);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Exception Intialize Db");
             }
